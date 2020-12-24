@@ -2,14 +2,14 @@ package com.pcl.ocr.scanner;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.Size;
+import android.view.Surface;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 import androidx.camera.core.AspectRatio;
@@ -36,6 +36,7 @@ import static androidx.camera.core.AspectRatio.RATIO_4_3;
  * time   : 2020/05/27
  */
 public class ScannerView extends RelativeLayout {
+    private final static String TAG = "ScannerView";
 
     private PreviewView mPreviewView;
 
@@ -119,8 +120,17 @@ public class ScannerView extends RelativeLayout {
     @SuppressLint("RestrictedApi")
     private void initUseCase() {
         // 1. preview
-        int screenAspectRatio = getPreviewRatio();
-        int rotation = mPreviewView.getDisplay().getRotation();
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics metrics = new DisplayMetrics();
+        // 默认方向
+        int rotation = Surface.ROTATION_0;
+        if (wm != null) {
+            wm.getDefaultDisplay().getMetrics(metrics);
+            rotation = wm.getDefaultDisplay().getRotation();
+        } else {
+            Log.w(TAG, "WindowManager is null");
+        }
+        int screenAspectRatio = getPreviewRatio(metrics);
         preview = new Preview.Builder()
                 .setTargetAspectRatio(screenAspectRatio)
                 .setTargetRotation(rotation)
@@ -135,9 +145,7 @@ public class ScannerView extends RelativeLayout {
     }
 
 
-    private int getPreviewRatio() {
-        DisplayMetrics metrics = new DisplayMetrics();
-        mPreviewView.getDisplay().getRealMetrics(metrics);
+    private int getPreviewRatio(DisplayMetrics metrics) {
         int width = metrics.widthPixels;
         int height = metrics.heightPixels;
         double previewRatio = (double) Math.max(width, height) / Math.min(width, height);
