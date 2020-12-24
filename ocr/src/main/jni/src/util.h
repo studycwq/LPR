@@ -62,13 +62,13 @@ namespace util{
         return hist;
 
     }
-    float computeSimilir(const cv::Mat &A,const cv::Mat &B)
+    double computeSimilir(const cv::Mat &A,const cv::Mat &B)
     {
 
         cv::Mat histA,histB;
         histA = calcHist(A);
         histB = calcHist(B);
-        return cv::compareHist(histA,histB,CV_COMP_CORREL);
+        return cv::compareHist(histA,histB, cv::HistCompMethods::HISTCMP_CORREL);
 
     }
 

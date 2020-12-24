@@ -9,10 +9,12 @@ android {
         versionName rootProject.ext.android.versionName
         ndk {
             abiFilters 'armeabi-v7a'
+            //, 'arm64-v8a'
         }
         externalNativeBuild {
             cmake {
-                cppFlags "-std=gnu++11"
+                cppFlags "-std=c++11"
+                arguments "-DANDROID_STL=c++_shared"
                 // 注意！！！！       注意！！！！！！
                 //如果是用 Linux 开发的的用户下面这行代码不用动，如果是 Win 用户请把 下面这行代码注释了
 //                arguments "-DANDROID_TOOLCHAIN=gcc", "-DANDROID_ARM_NEON=TRUE", "-DANDROID_STL_FORCE_FEATURES=OFF"

@@ -26,4 +26,8 @@ namespace pr{
 
 
     }
+
+    GeneralRecognizer::~GeneralRecognizer() {
+    // 空析构函数
+    }
 }

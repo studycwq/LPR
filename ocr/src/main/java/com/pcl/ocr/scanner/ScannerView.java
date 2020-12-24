@@ -59,10 +59,12 @@ public class ScannerView extends RelativeLayout {
 
     public ScannerView(Context context) {
         this(context, null);
+        init(context, null);
     }
 
     public ScannerView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
+        init(context, attrs);
     }
 
     public ScannerView(Context context, AttributeSet attrs, int defStyleAttr) {
